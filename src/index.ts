@@ -37,9 +37,10 @@ app.get('/weather', (request:any, response:any) => {
             title: 'Weather',
             footer: 'weather'
         });
+        return 'No adress has been provided!';
     }
     else {
-        const data = getLocation(request.query.adress, (error:string, name: string, location: number[]) => {
+        getLocation(request.query.adress, (error:string, name: string, location: number[]) => {
             if (error)
             {  
                 response.render('weather', {
@@ -47,20 +48,22 @@ app.get('/weather', (request:any, response:any) => {
                     title: 'Weather',
                     footer: 'weather'
                 })
+                //return error;
             }
 
             const city = name;
-            /* console.log(`Latitude: ${location[1]}`);
-            console.log(`Longitude: ${location[0]}`); */
+            console.log(`Latitude: ${location[1]}`);
+            console.log(`Longitude: ${location[0]}`);
         
             getWeather(location.reverse(), (error: string, { temperature, feelslike, precip }: any = {}) => {
-                //console.log(temperature);
+                console.log("Temperature: " + temperature);
                 if (error) {
                     response.render('weather', {
                         weather: error,
                         title: 'Weather',
                         footer: 'weather'
                     })
+                    //return error;
                 }
                 const message: string = 'It is currently ' +
                     temperature + ' degrees out and it feels like ' +
@@ -73,9 +76,10 @@ app.get('/weather', (request:any, response:any) => {
                     title: 'Weather',
                     footer: 'weather'
                 })
+                //return message;
               })
             })
-
+        //return 'Could not fetch any data';
     }
 })
 
